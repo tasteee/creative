@@ -1,0 +1,83 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+:root {
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	margin: 0;
+	display: flex;
+	place-items: center;
+	min-width: 320px;
+	min-height: 100vh;
+	font-family: 'Sen', sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
+}
+
+.SearchPage {
+	display: flex;
+	gap: 40px;
+}
+
+.LeftSection {
+	max-width: 280px;
+	display: flex;
+	flex-direction: column;
+}
+
+.LeftSection .FilterSection {
+	width: 280px;
+	display: flex;
+	flex-direction: column;
+}
+
+.LeftSection .FilterSection .FilterSectionHeader {
+	color: white;
+	height: 37px;
+	font-weight: 300;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0px 8px;
+	background: #3fa9f5;
+	font-size: 18px;
+}
+
+.LeftSection .FilterSection .FilterSectionBody {
+	display: flex;
+	flex-direction: column;
+	padding: 16px;
+}
+
+.LeftSection .FilterSection .CheckboxFilter {
+	display: flex;
+	gap: 8px;
+}
+
+.clearFiltersButton {
+	width: 75px;
+	height: 26px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1px 8px 0px;
+}
+
+.paginationButton {
+	max-width: 24px;
+	max-height: 24px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #717171;
+	background: #efefef;
+}
