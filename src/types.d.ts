@@ -31,3 +31,13 @@ type SearchPagePropsT = {
 	search: (options: SearchOptionsT) => void
 	results: SearchResultT[]
 }
+
+type SearchPageStateT = {
+	sortMethod: string
+	searchQuery: string
+	filters: AnyObjectT
+	setSortMethod: (method: string) => void
+	setSearchQuery: (query: string) => void
+	clearFilters: () => void
+	search: (page?: number) => void
+}

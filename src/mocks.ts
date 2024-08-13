@@ -17,9 +17,8 @@ export const createMockResults = (count: number) => {
 
 const splitResultsIntoPages = (results: SearchResultT[]) => {
 	const totalPages = Math.ceil(results.length / 12)
-	const resultsPages = range(0, totalPages).map(() => []) as SearchResultT[][]
+	const resultsPages = range(totalPages).map(() => []) as SearchResultT[][]
 
-	console.log({ resultsPages })
 	results.forEach((result, index) => {
 		const page = Math.floor(index / 12)
 		resultsPages[page].push(result)
@@ -56,6 +55,7 @@ export const getMockSearchResults = async (options: SearchOptionsT) => {
 		const newPageNumber = (persistence.page = options.page)
 		const results = persistence.resultsPages[newPageNumber]
 		await wait(1000)
+
 		return {
 			results,
 			totalItems: persistence.totalItems,
@@ -66,7 +66,7 @@ export const getMockSearchResults = async (options: SearchOptionsT) => {
 
 	// Simulate a slow PHP ass server lmao
 	const responseDelay = faker.number.int({ min: 700, max: 2300 })
-	const numberOfResults = faker.number.int({ min: 5, max: 100 })
+	const numberOfResults = faker.number.int({ min: 88, max: 100 })
 	await wait(responseDelay)
 
 	const results = (persistence.results = createMockResults(numberOfResults))

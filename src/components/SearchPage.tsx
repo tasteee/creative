@@ -1,12 +1,13 @@
-// import './App.css'
-import { useState } from 'react'
-import { FILTER_LABELS, SORT_METHODS } from './consts'
-import { ContextStateProvider, useContextState } from './context'
+import { SORT_METHODS } from '../consts'
+import { ContextStateProvider, useContextState } from './hooks/useContextState'
+import { FilterSection } from './FiltersSection'
+import range from 'array-range'
+import { Cross1Icon, Cross2Icon } from '@radix-ui/react-icons'
+import FilterIcon from './filter.svg'
 
 export const SearchPage = (props: SearchStateT) => {
-	console.log({ props })
 	return (
-		<ContextStateProvider value={props}>
+		<ContextStateProvider searchState={props}>
 			<div className="SearchPage">
 				<LeftSection />
 				<RightSection />
@@ -21,9 +22,16 @@ const LeftSection = () => {
 
 	return (
 		<div className="LeftSection">
-			<button className="clearFiltersButton" onClick={pageState.clearFilters}>
-				CLEAR
-			</button>
+			<div className="topRow">
+				<h3 className="filtersTitle">
+					<img src={FilterIcon} alt="Filter Icon" style={{ width: 20 }} />
+					Filters
+				</h3>
+				<button className="clearFiltersButton" onClick={pageState.clearFilters}>
+					<Cross2Icon style={{ color: '#D77272' }} />
+					CLEAR
+				</button>
+			</div>
 			<FilterSection
 				id="disciplines"
 				title="Disciplines"
@@ -47,12 +55,13 @@ const RightSection = () => {
 
 	return (
 		<div className="rightSection">
-			<div className="search-bar">
+			<div className="searchBar">
 				<input
+					className="searchInput"
 					type="text"
 					value={pageState.searchQuery}
 					onChange={(e) => pageState.setSearchQuery(e.target.value)}
-					placeholder="Search Our Directory"
+					placeholder="Search"
 				/>
 				<button className="submitButton" onClick={() => pageState.search()}>
 					Go
@@ -64,69 +73,22 @@ const RightSection = () => {
 	)
 }
 
-type FilterSectionPropsT = {
-	id: string
-	title: string
-	filters: AnyObjectT
-	handleChange: (key: string) => void
-}
-
-const FilterSection = (props: FilterSectionPropsT) => {
-	const [isExpanded, setIsExpanded] = useState(true)
-	const filtersEntries = Object.entries(props.filters)
-
-	return (
-		<div className="FilterSection">
-			<h3 className="FilterSectionHeader" onClick={() => setIsExpanded(!isExpanded)}>
-				{props.title}
-			</h3>
-
-			{isExpanded && (
-				<div className="FilterSectionBody">
-					{filtersEntries.map((entry: [string, boolean]) => (
-						<CheckboxFilter key={entry[0]} value={entry[1]} filterKey={entry[0]} toggle={props.handleChange} />
-					))}
-				</div>
-			)}
-		</div>
-	)
-}
-
-type CheckboxFilterPropsT = {
-	value: boolean
-	filterKey: string
-	toggle: (key: string) => void
-}
-
-const CheckboxFilter = (props: CheckboxFilterPropsT) => {
-	const filterKey = props.filterKey as keyof typeof FILTER_LABELS
-	const label = FILTER_LABELS[filterKey]
-
-	const toggleFilter = () => {
-		props.toggle(filterKey)
-	}
-
-	return (
-		<li className="CheckboxFilter">
-			<input type="checkbox" id={filterKey} checked={props.value} onChange={toggleFilter} />
-			<label htmlFor={filterKey}>{label}</label>
-		</li>
-	)
-}
-
 const PaginationRow = () => {
 	const { paginationState, pageState, searchState } = useContextState()
 	const { startIndex, endIndex } = paginationState
-	console.log({ pageState, searchState, paginationState })
 	if (!searchState.results.length) return null
 
 	return (
 		<div className="PaginationRow">
-			<span>
-				{startIndex}-{endIndex} of {searchState.totalResults} results
+			<span className="resultsCounter">
+				{startIndex}-{endIndex} of {searchState.totalItems} results
 			</span>
 			<Pagination />
-			<select value={pageState.sortMethod} onChange={(e) => pageState.setSortMethod(e.target.value)}>
+			<select
+				className="sortSelect"
+				value={pageState.sortMethod}
+				onChange={(e) => pageState.setSortMethod(e.target.value)}
+			>
 				{SORT_METHODS.map((method) => (
 					<option key={method.value} value={method.value}>
 						{method.label}
@@ -144,6 +106,7 @@ type PaginationArrowButtonPropsT = {
 
 const PaginationArrowButton = (props: PaginationArrowButtonPropsT) => {
 	const label = props.direction === 'forward' ? '→' : '←'
+
 	return (
 		<button className="paginationButton" onClick={props.onClick}>
 			{label}
@@ -154,64 +117,79 @@ const PaginationArrowButton = (props: PaginationArrowButtonPropsT) => {
 const Pagination = () => {
 	const { paginationState, pageState } = useContextState()
 	const { currentPage, totalPages, setNextPage, setPreviousPage, nextEnabled, previousEnabled } = paginationState
-
 	const goToPage = (page: number) => () => pageState.search(page)
+	const startPage = Math.max(0, currentPage - 1)
+	const endPage = Math.min(totalPages - 1, currentPage + 1)
+	const pagesRange = range(0, totalPages)
 
 	const renderPageNumbers = () => {
 		const pageNumbers = []
 
 		if (totalPages <= 5) {
 			// If total pages are 5 or less, show all page numbers
-			for (let i = 0; i < totalPages; i++) {
-				pageNumbers.push(
-					<button key={i} className={`paginationButton ${currentPage === i ? 'active' : ''}`} onClick={goToPage(i)}>
-						{i + 1}
-					</button>
-				)
-			}
-		} else {
-			// More than 5 pages
-			if (currentPage > 2) {
-				pageNumbers.push(
-					<button key="first" className="paginationButton" onClick={goToPage(0)}>
-						1
-					</button>
-				)
-				if (currentPage > 3) {
-					pageNumbers.push(
-						<span key="ellipsis-start" className="paginationButton fakeButton">
-							...
-						</span>
-					)
-				}
-			}
+			for (const index of pagesRange) {
+				const isIndexCurrentPage = index === currentPage
+				const className = isIndexCurrentPage ? 'activePageButton' : ''
 
-			const startPage = Math.max(0, currentPage - 1)
-			const endPage = Math.min(totalPages - 1, currentPage + 1)
-
-			for (let i = startPage; i <= endPage; i++) {
 				pageNumbers.push(
-					<button key={i} className={`paginationButton ${currentPage === i ? 'active' : ''}`} onClick={goToPage(i)}>
-						{i + 1}
+					<button key={index} className={`paginationButton ${className}`} onClick={goToPage(index)}>
+						{index + 1}
 					</button>
 				)
 			}
 
-			if (currentPage < totalPages - 3) {
-				if (currentPage < totalPages - 4) {
-					pageNumbers.push(
-						<span key="ellipsis-end" className="paginationButton fakeButton">
-							...
-						</span>
-					)
-				}
-				pageNumbers.push(
-					<button key="last" className="paginationButton" onClick={goToPage(totalPages - 1)}>
-						{totalPages}
-					</button>
-				)
-			}
+			return pageNumbers
 		}
+
+		// Always show the first page
+		pageNumbers.push(
+			<button
+				key="first"
+				className={`paginationButton ${currentPage === 0 ? 'activePageButton' : ''}`}
+				onClick={goToPage(0)}
+			>
+				1
+			</button>
+		)
+
+		if (currentPage > 2) {
+			pageNumbers.push(
+				<span key="ellipsis-start" className="paginationButton fakeButton">
+					...
+				</span>
+			)
+		}
+
+		// Determine the range of page numbers to display around the current page
+		const startPage = Math.max(1, currentPage - 1)
+		const endPage = Math.min(totalPages - 2, currentPage + 1)
+
+		for (let i = startPage; i <= endPage; i++) {
+			pageNumbers.push(
+				<button key={i} className={`paginationButton ${currentPage === i ? 'activePageButton' : ''}`} onClick={goToPage(i)}>
+					{i + 1}
+				</button>
+			)
+		}
+
+		if (currentPage < totalPages - 3) {
+			pageNumbers.push(
+				<span key="ellipsis-end" className="paginationButton fakeButton">
+					...
+				</span>
+			)
+		}
+
+		// Always show the last page
+		pageNumbers.push(
+			<button
+				key="last"
+				className={`paginationButton ${currentPage === totalPages - 1 ? 'activePageButton' : ''}`}
+				onClick={goToPage(totalPages - 1)}
+			>
+				{totalPages}
+			</button>
+		)
 
 		return pageNumbers
 	}

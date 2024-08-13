@@ -2,6 +2,12 @@
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
+	font-family: Avenir, 'Nunito', sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
+	border: none;
+	outline: none;
 }
 
 :root {
@@ -17,10 +23,45 @@ body {
 	place-items: center;
 	min-width: 320px;
 	min-height: 100vh;
-	font-family: 'Sen', sans-serif;
-	font-optical-sizing: auto;
+}
+
+label {
+	user-select: none;
+}
+
+.searchInput {
+	background: #f2f2f2;
+	height: 48px;
+	padding: 0px 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-top: 4px;
+	width: 100%;
+	font-size: 20px;
 	font-weight: 400;
-	font-style: normal;
+}
+
+.searchBar {
+	width: 100%;
+	display: flex;
+}
+
+.searchInput::placeholder {
+	font-size: 20px;
+	font-weight: 400;
+}
+
+.submitButton {
+	height: 48px;
+	width: 60px;
+	background: #3fa9f5;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 20px;
+	font-weight: 400;
+	color: #fff;
 }
 
 .SearchPage {
@@ -52,10 +93,22 @@ body {
 	font-size: 18px;
 }
 
+.LeftSection .topRow {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 12px;
+}
+
 .LeftSection .FilterSection .FilterSectionBody {
 	display: flex;
 	flex-direction: column;
 	padding: 16px;
+	gap: 12px;
+}
+
+.filterSectionChevron {
+	scale: 1.25;
 }
 
 .LeftSection .FilterSection .CheckboxFilter {
@@ -63,21 +116,131 @@ body {
 	gap: 8px;
 }
 
+.LeftSection .filtersTitle {
+	color: #3fa9f5;
+	font-size: 20px;
+	font-weight: 400;
+	line-height: 27.32px;
+	text-align: center;
+	display: flex;
+	gap: 4px;
+}
+
 .clearFiltersButton {
-	width: 75px;
+	width: 80px;
 	height: 26px;
 	display: flex;
+	gap: 4px;
 	justify-content: center;
 	align-items: center;
 	padding: 1px 8px 0px;
+	background: transparent;
+	border: 1px solid #d77272;
+	color: #d77272;
 }
 
 .paginationButton {
-	max-width: 24px;
-	max-height: 24px;
+	width: 24px;
+	height: 24px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	color: #717171;
 	background: #efefef;
+}
+
+.paginationButton.activePageButton {
+	font-weight: 700;
+}
+
+.rightSection {
+	width: 100%;
+}
+
+.search-results {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 20px;
+}
+
+.result-card {
+	border: 1px solid #e0e0e0;
+	padding: 10px;
+}
+
+.result-card img {
+	width: 100%;
+	height: auto;
+	object-fit: cover;
+}
+
+.result-card h3 {
+	margin: 10px 0;
+}
+
+.result-card p {
+	font-size: 14px;
+	color: #666;
+}
+
+.sortSelect {
+	color: #3fa9f5;
+}
+
+.search-results {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+	gap: 20px;
+}
+
+.search-result p {
+	display: -webkit-box;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.search-result h4 {
+	font-size: 21px;
+	font-weight: 350;
+	letter-spacing: -0.30000001192092896px;
+	text-align: left;
+	margin: 12px 0 4px;
+}
+
+.search-result {
+	display: flex;
+	flex-direction: column;
+}
+
+.image-container {
+	width: 100%;
+	padding-bottom: 66%;
+	position: relative;
+	overflow: hidden;
+}
+
+.image-container img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.Pagination {
+	display: flex;
+	gap: 8px;
+}
+
+.PaginationRow {
+	display: flex;
+	justify-content: space-between;
+	gap: 8px;
+	margin: 16px 0;
+}
+
+.PaginationRow .resultsCounter {
+	color: #3fa9f5;
 }

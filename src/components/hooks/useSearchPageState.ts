@@ -1,9 +1,6 @@
-import { createContextHook } from './createContextHook'
-import { usePagination } from 'react-use-pagination'
 import { useState } from 'react'
-import { INITIAL_FILTERS } from './consts'
+import { INITIAL_FILTERS } from '../../consts'
 
-// Builds the state / setters for each individual filter section.
 export const useFiltersSectionState = (key: keyof typeof INITIAL_FILTERS) => {
 	const initialState = INITIAL_FILTERS[key]
 	const [filters, setFilters] = useState<AnyObjectT>(initialState)
@@ -24,7 +21,6 @@ export const useFiltersSectionState = (key: keyof typeof INITIAL_FILTERS) => {
 	}
 }
 
-// Combines the individual filter sections into a single state hook.
 export const useFilters = () => {
 	const disciplines = useFiltersSectionState('disciplines')
 	const institutions = useFiltersSectionState('institutions')
@@ -47,8 +43,6 @@ export const useFilters = () => {
 	}
 }
 
-// Merges the filters with searchQuery state
-// and sortMethod state to create a single state hook.
 export const useSearchPageState = (searchState: SearchStateT) => {
 	const { clearFilters, ...filters } = useFilters()
 	const [query, setQuery] = useState('')
@@ -73,20 +67,3 @@ export const useSearchPageState = (searchState: SearchStateT) => {
 		search
 	}
 }
-
-type ProviderPropsT = {
-	value: SearchStateT
-}
-
-export const [ContextStateProvider, useContextState] = createContextHook((providerProps: ProviderPropsT) => {
-	const searchState = providerProps.value
-	const paginationState = usePagination({ totalItems: searchState.totalItems, initialPageSize: 12 })
-	const pageState = useSearchPageState(searchState)
-	// currentPage, totalPages, setNextPage, setPreviousPage, nextEnabled, previousEnabled, startIndex, endIndex,
-
-	return {
-		paginationState,
-		searchState,
-		pageState
-	}
-})
