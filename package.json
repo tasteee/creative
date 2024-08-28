@@ -17,6 +17,7 @@
 		"@testing-library/dom": "^10.4.0",
 		"@testing-library/jest-dom": "^6.4.8",
 		"@testing-library/react": "^16.0.0",
+		"@testing-library/react-hooks": "^8.0.1",
 		"array-range": "^1.0.1",
 		"i": "^0.3.7",
 		"jsdom": "^24.1.1",
