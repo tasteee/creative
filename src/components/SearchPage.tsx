@@ -2,8 +2,8 @@ import { SORT_METHODS } from '../consts'
 import { ContextStateProvider, useContextState } from './hooks/useContextState'
 import { FilterSection } from './FiltersSection'
 import range from 'array-range'
-import { Cross1Icon, Cross2Icon } from '@radix-ui/react-icons'
-import FilterIcon from './filter.svg'
+import { Cross2Icon } from '@radix-ui/react-icons'
+import FilterIcon from '../assets/filter.svg'
 
 export const SearchPage = (props: SearchStateT) => {
 	return (

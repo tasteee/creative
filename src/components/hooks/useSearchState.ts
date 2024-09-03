@@ -1,5 +1,4 @@
 import React from 'react'
-import { getMockSearchResults } from '../../mocks.ts'
 
 export const useSearchState = (mockResults?: any) => {
 	const [results, setResults] = React.useState<SearchResultT[]>([])
@@ -25,21 +24,28 @@ export const useSearchState = (mockResults?: any) => {
 	}
 }
 
-export const getResults = async (options: SearchOptionsT) => {
-	const url =
-		'https://nbcreative.kinsta.cloud/wp-content/plugins/new-bedford-art/public/api-handler.php?api=rest&action=search_options&'
-	const parameters = new URLSearchParams()
+const BASE_URL = 'https://nbcreative.kinsta.cloud/wp-content/plugins/new-bedford-art/public/'
+const API_URL = BASE_URL + 'api-handler.php?api=rest&action=search_options&'
 
-	Object.entries(options).forEach(([key, value]) => {
-		parameters.append(key, String(value))
-	})
+export const getResults = async (options: SearchOptionsT) => {
+	// NOTE: This is not sufficient. It is temporary. Need to
+	// handle nested filters to convert them to API compliant
+	// url params.
+	const parameters = new URLSearchParams(options)
 
 	const headers = {
 		'Content-Type': 'application/json',
-		Authorization: 'Bearer 1ac9e67a9c2a56510b9f2e9f4f2d97cc' // temp
+		Authorization: import.meta.env.VITE_API_KEY
 	}
 
-	const response = await fetch(url + parameters.toString(), { headers })
+	console.log({ headers })
+
+	const response = await fetch(API_URL + parameters.toString(), {
+		headers,
+		method: 'GET',
+		mode: 'cors'
+	})
+
 	const data = await response.json()
 	return data
 }
