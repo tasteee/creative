@@ -14,10 +14,9 @@ console.log({
 
 const headers = {
 	Authorization: API_TOKEN,
-	Accept: 'application/json',
+	Accept: 'application/json'
 	// ContentType: 'application/vnd.api+json',
 	// UserAgent: 'CG_API_[PartnerName]/[version]',
-	mode: 'cors'
 }
 
 const applyPageNumber = (state: AnyObjectT, parameters: URLSearchParams): void => {
