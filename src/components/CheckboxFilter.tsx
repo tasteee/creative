@@ -1,17 +1,13 @@
-import { FILTER_LABELS } from '../consts'
+import { $store } from '../state/$store'
 
-type CheckboxFilterPropsT = {
-	value: boolean
-	filterKey: string
-	toggle: (key: string) => void
-}
+type CheckboxFilterPropsT = FilterT
 
 export const CheckboxFilter = (props: CheckboxFilterPropsT) => {
-	const filterKey = props.filterKey as keyof typeof FILTER_LABELS
-	const label = FILTER_LABELS[filterKey]
+	// just subscribing to the filter. but we already have the data via props.
+	$store.useFilter(props.category, props.id)
 
 	const toggleFilter = () => {
-		props.toggle(filterKey)
+		$store.toggleFilter(props.category)(props.id)
 	}
 
 	return (
@@ -19,13 +15,13 @@ export const CheckboxFilter = (props: CheckboxFilterPropsT) => {
 			<input
 				type="checkbox"
 				role="checkbox"
-				id={filterKey}
-				data-testid={filterKey}
+				id={props.id}
+				data-testid={props.id}
 				checked={props.value}
 				onChange={toggleFilter}
 			/>
-			<label htmlFor={filterKey} style={{ color: props.value ? '#3fa9f5' : 'inherit' }}>
-				{label}
+			<label htmlFor={props.id} style={{ color: props.value ? '#3fa9f5' : 'inherit' }}>
+				{props.label}
 			</label>
 		</div>
 	)

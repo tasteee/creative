@@ -19,6 +19,7 @@
 		"@testing-library/react": "^16.0.0",
 		"@testing-library/react-hooks": "^8.0.1",
 		"array-range": "^1.0.1",
+		"datass": "^0.0.111",
 		"i": "^0.3.7",
 		"jsdom": "^24.1.1",
 		"just-is-empty": "^3.4.1",
@@ -29,7 +30,8 @@
 		"react-use-pagination": "^2.0.1",
 		"vite-svg-loader": "^5.1.0",
 		"vitest": "^2.0.5",
-		"wait": "^0.4.2"
+		"wait": "^0.4.2",
+		"zustand": "^4.5.5"
 	},
 	"devDependencies": {
 		"@types/react": "^18.2.65",

@@ -19,8 +19,6 @@
 
 body {
 	margin: 0;
-	display: flex;
-	place-items: center;
 	min-width: 320px;
 	min-height: 100vh;
 }
@@ -66,6 +64,7 @@ label {
 
 .SearchPage {
 	display: flex;
+	height: 100%;
 	gap: 40px;
 }
 
@@ -79,6 +78,7 @@ label {
 	width: 280px;
 	display: flex;
 	flex-direction: column;
+	user-select: none;
 }
 
 .LeftSection .FilterSection .FilterSectionHeader {
@@ -127,6 +127,7 @@ label {
 }
 
 .clearFiltersButton {
+	white-space: nowrap;
 	width: 80px;
 	height: 26px;
 	display: flex;
